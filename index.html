@@ -16,7 +16,7 @@
         <input type="radio" id="interest" name="repayment">本息攤還
         <br>
         <label for="loanAmount">貸款金額</label>
-        <input id="loanAmount" type="number" placeholder="請輸入金額">&nbsp; 萬
+        <input id="loanAmount" type="number" placeholder="請輸入金額" value="10">&nbsp; 萬
         <br>
         <label for="interestRate">貸款利率</label>
         <input id="interestRate" trpe="number" step="0.1" value="3.5">&nbsp; %
@@ -35,27 +35,49 @@
         <input type="button" value="清除"></button>
         <input type="button" value="立即計算" onclick="roanCalc()"></input>
     </form>
-    <script>
-        const loanAmountEl = document.querySelector("#loanAmount");
-        const interestRateEl = document.querySelector("#interestRate");
-        const loanYearEl = document.querySelector("#loanYear");
+    <ul>
+        <li></li>
+        <script>
+            const loanAmountEl = document.querySelector("#loanAmount");
+            const interestRateEl = document.querySelector("#interestRate");
+            const loanYearEl = document.querySelector("#loanYear");
 
-        const principalEl = document.querySelector("#principal");
-        const interestEl = document.querySelector("#interest");
+            const principalEl = document.querySelector("#principal");
+            const interestEl = document.querySelector("#interest");
 
 
 
-        function roanCalc() {
-            //取得貸款金額/利率/年數
-            let loanAmount = loanAmountEl.value;
-            let interestRate = interestRateEl.value;
-            let loanYear = loanYearEl.value;
-            //取得計算方式
-            // let principalPayment =
+            function roanCalc() {
+                //取得貸款金額/利率/年數
+                let loanAmount = loanAmountEl.value * 10000;
+                let interestRate = interestRateEl.value;
+                let loanYear = loanYearEl.value;
+                //取得計算方式
+                // let principalPayment =
 
-            console.log(loanAmount, interestRateloanYear);
-        }
-    </script>
+                console.log(loanAmount, interestRate, loanYear);
+
+                let amount = loanAmount
+                let months = loanYear * 12
+                let monthRate = interestRate / 100 / 12
+                //固定還款金額
+                let monthPay = parseInt(amount / months)
+                console.log(amount, months, monthRate, monthPay);
+
+                for (let i = 0; i < months; i++) {
+
+                    interest = Math.round(amount * monthRate)//math.round=round
+                    amount -= monthPay
+                    //最後一期餘額加本金
+                    if (i == months - 1) {
+                        console.log(`期別:${i + 1}本金:${monthPay + amount}利息:${interest}本利和:${monthPay + interest + amount}餘額:${0}`)
+                    } else {
+                        console.log(`期別:${i + 1}本金:${monthPay}利息:${interest}本利和:${monthPay + interest}餘額:${amount}`)
+                    }
+
+                }
+            }
+        </script>
 
 </body>
 
