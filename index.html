@@ -12,17 +12,17 @@
 
     <form>
         <label for="">計算方式:</label>
-        <input type="radio" name="repayment" checked>本金攤還
-        <input type="radio" name="repayment">本息攤還
+        <input type="radio" id="principal" name="repayment" checked>本金攤還
+        <input type="radio" id="interest" name="repayment">本息攤還
         <br>
         <label for="loanAmount">貸款金額</label>
         <input id="loanAmount" type="number" placeholder="請輸入金額">&nbsp; 萬
         <br>
         <label for="interestRate">貸款利率</label>
-        <input id="interestRate" number step="0.1" value="3.5">&nbsp; %
+        <input id="interestRate" trpe="number" step="0.1" value="3.5">&nbsp; %
         <br>
         <label for="loanYear">貸款年數</label>
-        <select name="loanYear" id="loanYear">
+        <select name="loanYear" id="loanYear" type="number">
             <option value="3">3</option>
             <option value="5">5</option>
             <option value="7" selected>7</option>
@@ -33,9 +33,29 @@
         &nbsp; 年
         <br>
         <input type="button" value="清除"></button>
-        <input type="button" value="立即計算"></button>
+        <input type="button" value="立即計算" onclick="roanCalc()"></input>
     </form>
+    <script>
+        const loanAmountEl = document.querySelector("#loanAmount");
+        const interestRateEl = document.querySelector("#interestRate");
+        const loanYearEl = document.querySelector("#loanYear");
 
+        const principalEl = document.querySelector("#principal");
+        const interestEl = document.querySelector("#interest");
+
+
+
+        function roanCalc() {
+            //取得貸款金額/利率/年數
+            let loanAmount = loanAmountEl.value;
+            let interestRate = interestRateEl.value;
+            let loanYear = loanYearEl.value;
+            //取得計算方式
+            // let principalPayment =
+
+            console.log(loanAmount, interestRateloanYear);
+        }
+    </script>
 
 </body>
 
