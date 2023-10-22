@@ -1,61 +1,62 @@
+<!-- ---------------------------------------------- -->
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>貸款利息計</title>
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>貸款利息計算器</h1>
-
     <form>
         <label for="">計算方式:</label>
-        <input type="radio" id="principal" name="repayment" checked>本金攤還
-        <input type="radio" id="interest" name="repayment">本息攤還
+        <input type="radio" id="principalPayment" name="repayment" checked>本金攤還
+        <input type="radio" id="interestPayment" name="repayment">本息攤還
         <br>
-        <label for="loanAmount">貸款金額</label>
-        <input id="loanAmount" type="number" placeholder="請輸入金額" value="10">&nbsp; 萬
+        <label for="loanAmount">貸款金額:</label>
+        <input type="number" id="loanAmount" placeholder="請輸入金額" value="10">&nbsp;萬
         <br>
-        <label for="interestRate">貸款利率</label>
-        <input id="interestRate" trpe="number" step="0.1" value="3.5">&nbsp; %
+        <label for="interestRate">貸款利率:</label>
+        <input type="number" id="interestRate" step="0.1" value="3.5">&nbsp;%
         <br>
-        <label for="loanYear">貸款年數</label>
-        <select name="loanYear" id="loanYear" type="number">
+        <label for="loanYear">貸款年數:</label>
+        <select name="loanYear" id="loanYear">
             <option value="3">3</option>
             <option value="5">5</option>
             <option value="7" selected>7</option>
             <option value="10">10</option>
             <option value="20">20</option>
-
-        </select>
-        &nbsp; 年
+        </select>&nbsp;年
         <br>
-        <!-- <input type="button" value="清除"></button> -->
-        <input type="button" value="立即計算" onclick="roanCalc()"></input>
+        <input type="button" value="計算" onclick="roanCalc()">
     </form>
-    <ul id="result">
-        <li></li>
-    </ul>
-    <table id="resultTable" border="1">
+    <div id="result">
+
+
+
+    </div>
+    <table id="resultTable" border="1" hidden>
         <thead>
             <tr>
                 <th>期別</th>
                 <th>本金</th>
                 <th>利息</th>
-                <th>利息</th>
                 <th>本利和</th>
                 <th>餘額</th>
-
             </tr>
         </thead>
-
         <tbody>
 
         </tbody>
-
-
 
     </table>
 
@@ -64,68 +65,73 @@
         const loanAmountEl = document.querySelector("#loanAmount");
         const interestRateEl = document.querySelector("#interestRate");
         const loanYearEl = document.querySelector("#loanYear");
-        const tableTbodyEl = document.querySelector("#resultTable tbody");
-        const principalEl = document.querySelector("#principal");
-        const interestEl = document.querySelector("#interest");
-        //result
+        const principalPaymentEl = document.querySelector("#principalPayment");
         const resultEl = document.querySelector("#result");
-
+        const tableTbodyEl = document.querySelector("#resultTable tbody");
 
 
         function roanCalc() {
-            //取得貸款金額/利率/年數
+            //取得貸款金額/利率/年期
             let loanAmount = loanAmountEl.value * 10000;
             let interestRate = interestRateEl.value;
             let loanYear = loanYearEl.value;
-            //取得計算方式
-            // let principalPayment =
+            //本金攤還方式
+            let principalPayment = principalPaymentEl.checked;
+            console.log(loanAmount, interestRate, loanYear, principalPayment);
 
-            console.log(loanAmount, interestRate, loanYear);
-
-            let amount = loanAmount
-            let months = loanYear * 12
-            let monthRate = interestRate / 100 / 12
+            let amount = loanAmount;
+            let months = loanYear * 12;
+            let monthRate = interestRate / 100 / 12;
             //固定還款金額
-            let monthPay = parseInt(amount / months)
+            let monthPay = parseInt(amount / months);
+            let resultPayment = [];
+
             console.log(amount, months, monthRate, monthPay);
 
-
-
-
-            let liText = ''
-
-            function drawTable(resultPayment) {
-                //console.log(tableTbodyEl, resultPayment);
-                let tableHtml = "";
-                // tr
-
-                for (let i = 0; i < resultPayment.length; i++) {
-                    tableHtml += "<tr>"
-                    for (let j = 0; j < resultPayment[i].length; j++) {
-                        //td
-                        tableHtml += `<td>${resultPayment[i][j]}</td>`
-                        console.log(resultPayment[i][j]);
-                    }
-                }
-            }
-
+            //跑動期數
             for (let i = 0; i < months; i++) {
-
-                let interest = Math.round(amount * monthRate)//math.round=round
-                amount -= monthPay
-                //最後一期餘額加本金
-
+                //計算每個月利息
+                let interest = Math.round(amount * monthRate);
+                //減少餘額
+                amount -= monthPay;
+                //最後一期              
                 if (i == months - 1) {
-                    console.log(`期別:${i + 1}本金:${monthPay + amount}利息:${interest}本利和:${monthPay + interest + amount}餘額:${0}`)
-                } else {
-
-                    console.log(`期別:${i + 1}本金:${monthPay}利息:${interest}本利和:${monthPay + interest}餘額:${amount}`)
+                    resultPayment.push([i + 1, monthPay + amount, interest, monthPay + interest + amount, 0]);
                 }
-
+                else {
+                    resultPayment.push([i + 1, monthPay, interest, monthPay + interest, amount]);
+                }
             }
-        }
-    </script>
 
+            let totalInterest = 0;
+            for (let i = 0; i < resultPayment.length; i++) {
+                totalInterest += resultPayment[i][2];
+            }
+
+            resultEl.innerHTML = `期數:${months}總利息支出${totalInterest}總還款金額${totalInterest + loanAmount}`;
+
+
+            drawTable(resultPayment);
+        }
+
+        function drawTable(resultPayment) {
+            let tableHtml = "";
+            // tr
+            for (let i = 0; i < resultPayment.length; i++) {
+                tableHtml += "<tr>";
+                for (let j = 0; j < resultPayment[i].length; j++) {
+                    // td
+                    tableHtml += `<td>${resultPayment[i][j]}</td>`;
+                }
+                tableHtml += "</tr>";
+            }
+            if (tableHtml != "") {
+                document.querySelector("#resultTable").style.display = "table";
+            }
+            tableTbodyEl.innerHTML = tableHtml;
+        }
+
+    </script>
 </body>
 
 </html>
