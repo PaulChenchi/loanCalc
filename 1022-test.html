@@ -31,11 +31,12 @@
         <br>
         <input type="button" value="計算" onclick="roanCalc()">
     </form>
-    <ul id="result">
+    <div id="result">
 
 
-    </ul>
-    <table id="resultTable" border="1">
+
+    </div>
+    <table id="resultTable" border="1" hidden>
         <thead>
             <tr>
                 <th>期別</th>
@@ -59,6 +60,7 @@
         const principalPaymentEl = document.querySelector("#principalPayment");
         const resultEl = document.querySelector("#result");
         const tableTbodyEl = document.querySelector("#resultTable tbody");
+
 
         function roanCalc() {
             //取得貸款金額/利率/年期
@@ -93,6 +95,14 @@
                 }
             }
 
+            let totalInterest = 0;
+            for (let i = 0; i < resultPayment.length; i++) {
+                totalInterest += resultPayment[i][2];
+            }
+
+            resultEl.innerHTML = `期數:${months}總利息支出${totalInterest}總還款金額${totalInterest + loanAmount}`;
+
+
             drawTable(resultPayment);
         }
 
@@ -107,7 +117,9 @@
                 }
                 tableHtml += "</tr>";
             }
-
+            if (tableHtml != "") {
+                document.querySelector("#resultTable").style.display = "table";
+            }
             tableTbodyEl.innerHTML = tableHtml;
         }
 
