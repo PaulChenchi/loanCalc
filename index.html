@@ -32,17 +32,39 @@
         </select>
         &nbsp; 年
         <br>
-        <input type="button" value="清除"></button>
+        <!-- <input type="button" value="清除"></button> -->
         <input type="button" value="立即計算" onclick="roanCalc()"></input>
     </form>
     <ul id="result">
         <li></li>
     </ul>
+    <table id="resultTable" border="1">
+        <thead>
+            <tr>
+                <th>期別</th>
+                <th>本金</th>
+                <th>利息</th>
+                <th>利息</th>
+                <th>本利和</th>
+                <th>餘額</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+        </tbody>
+
+
+
+    </table>
+
+
     <script>
         const loanAmountEl = document.querySelector("#loanAmount");
         const interestRateEl = document.querySelector("#interestRate");
         const loanYearEl = document.querySelector("#loanYear");
-
+        const tableTbodyEl = document.querySelector("#resultTable tbody");
         const principalEl = document.querySelector("#principal");
         const interestEl = document.querySelector("#interest");
         //result
@@ -67,17 +89,36 @@
             let monthPay = parseInt(amount / months)
             console.log(amount, months, monthRate, monthPay);
 
+
+
+
             let liText = ''
 
+            function drawTable(resultPayment) {
+                //console.log(tableTbodyEl, resultPayment);
+                let tableHtml = "";
+                // tr
+
+                for (let i = 0; i < resultPayment.length; i++) {
+                    tableHtml += "<tr>"
+                    for (let j = 0; j < resultPayment[i].length; j++) {
+                        //td
+                        tableHtml += `<td>${resultPayment[i][j]}</td>`
+                        console.log(resultPayment[i][j]);
+                    }
+                }
+            }
 
             for (let i = 0; i < months; i++) {
 
-                interest = Math.round(amount * monthRate)//math.round=round
+                let interest = Math.round(amount * monthRate)//math.round=round
                 amount -= monthPay
                 //最後一期餘額加本金
+
                 if (i == months - 1) {
                     console.log(`期別:${i + 1}本金:${monthPay + amount}利息:${interest}本利和:${monthPay + interest + amount}餘額:${0}`)
                 } else {
+
                     console.log(`期別:${i + 1}本金:${monthPay}利息:${interest}本利和:${monthPay + interest}餘額:${amount}`)
                 }
 
